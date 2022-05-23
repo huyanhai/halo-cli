@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "jsx": "preserve",
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
+    "lib": ["esnext", "dom"],
+    "target": "ES2019",
+    "outDir": "./lib",
+    "module": "commonjs",
+    "declaration": true
+  },
+  "include": ["src/**/*", "typings"]
+}
