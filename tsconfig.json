@@ -8,7 +8,7 @@
     "moduleResolution": "Node",
     "lib": ["esnext", "dom"],
     "target": "ES2019",
-    "outDir": "./lib",
+    "outDir": "bin",
     "module": "commonjs",
     "declaration": true
   },
