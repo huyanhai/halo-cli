@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "tsc --watch",
-    "build": "rm -rf ./lib && tsc"
+    "lib": "rm -rf ./lib && tsc"
   },
   "author": "",
   "license": "ISC",
