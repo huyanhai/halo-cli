@@ -2,6 +2,7 @@ import { Command } from "commander";
 import figlet from "figlet";
 import { pkg } from "./constant";
 import { Generator } from "./generator";
+import cmdb from './cmdb';
 
 const program = new Command();
 
@@ -23,5 +24,9 @@ export const run = () => {
       })
     );
   });
+
+  // cmdb 相关命令
+  program.addCommand(cmdb);
+
   program.parse(process.argv);
 };

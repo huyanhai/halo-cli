@@ -8,6 +8,7 @@ const commander_1 = require("commander");
 const figlet_1 = __importDefault(require("figlet"));
 const constant_1 = require("./constant");
 const generator_1 = require("./generator");
+const cmdb_1 = __importDefault(require("./cmdb"));
 const program = new commander_1.Command();
 const run = () => {
     program.version(constant_1.pkg.version, "-V,--version");
@@ -25,6 +26,8 @@ const run = () => {
             verticalLayout: "full",
         }));
     });
+    // cmdb 相关命令
+    program.addCommand(cmdb_1.default);
     program.parse(process.argv);
 };
 exports.run = run;

@@ -1,0 +1,12 @@
+root = true
+
+[*]
+indent_style = space # 缩进风格-空格缩进
+indent_size = 2 # 四个空格缩进
+end_of_line = lf # 行末尾-换行
+charset = utf-8
+trim_trailing_whitespace = true # 删除新行的空白字符
+insert_final_newline = true # 换行结束
+
+[*.md]
+trim_trailing_whitespace = false

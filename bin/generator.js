@@ -16,17 +16,21 @@ const utils_1 = require("./utils");
 const inquirer_2 = require("./inquirer");
 const constant_1 = require("./constant");
 const path_1 = require("path");
+const inquirer_3 = require("./inquirer");
 class Generator {
     constructor(name) {
         this.url = "";
-        this.answers = { use: "", platform: "" };
+        this.answers = { use: inquirer_3.UseType.DEFAULT, platform: inquirer_3.PlatformType.PC };
         this.name = name;
         this.init();
     }
     async init() {
         this.checkProjectName();
         await this.ask();
-        this.url = this.answers.use === "monorepo" ? constant_1.repositoryByMonorepo : constant_1.repositoryByVue;
+        this.url =
+            this.answers.use === inquirer_3.UseType.MONOREPO
+                ? constant_1.repositoryByMonorepo
+                : constant_1.repositoryByVue;
         this.downloadFn();
     }
     checkProjectName() {
@@ -72,28 +76,64 @@ class Generator {
             }
         }
     }
-    downloadFn() {
+    async downloadFn() {
+        this.answers.way === inquirer_2.WayType.Project && this.writeFiles();
         (0, utils_1.downloadTemplate)(this.url, this.name, true, async () => {
             await this.editFilesInfo();
+            this.answers.way === inquirer_2.WayType.Project && (await this.moveFiles());
             this.installDependence();
         });
     }
+    // 写入模版文件
+    async writeFiles() {
+        const cachePath = (0, path_1.resolve)(process.cwd(), constant_1.cacheDirName);
+        const filePath = (0, path_1.resolve)(process.cwd(), `${constant_1.cacheDirName}/package.json`);
+        if ((0, fs_extra_1.existsSync)(cachePath)) {
+            await (0, fs_extra_1.remove)(cachePath);
+        }
+        (0, utils_1.downloadTemplate)(constant_1.repositoryByMonorepoForVue, constant_1.cacheDirName, true, () => {
+            const projectCtx = JSON.parse((0, fs_extra_1.readFileSync)(filePath, "utf-8"));
+            projectCtx.name = `@${this.name}/${constant_1.templateName}`;
+            (0, fs_extra_1.writeFileSync)(filePath, JSON.stringify(projectCtx, null, 4));
+        });
+    }
+    // 移动模版文件
+    async moveFiles() {
+        const cachePath = (0, path_1.resolve)(process.cwd(), constant_1.cacheDirName);
+        const projectRoot = (0, path_1.resolve)(constant_1.cwdDir, this.name, `packages/${constant_1.templateName}`);
+        return (0, fs_extra_1.moveSync)(cachePath, projectRoot);
+    }
     async editFilesInfo() {
         const projectRoot = (0, path_1.resolve)(constant_1.cwdDir, this.name);
+        if (this.answers.use === inquirer_3.UseType.MONOREPO) {
+            this.editTsconfig(projectRoot);
+        }
         const projectCtx = JSON.parse((0, fs_extra_1.readFileSync)((0, path_1.resolve)(projectRoot, "package.json"), "utf-8"));
-        const dependences = this.answers.platform === "pc" ? ["ant-design-vue", "@ant-design/icons-vue"] : ["vant"];
+        const dependencies = this.answers.platform === inquirer_3.PlatformType.PC
+            ? ["ant-design-vue", "@ant-design/icons-vue"]
+            : ["vant"];
         projectCtx.name = this.name;
-        const spinner = (0, ora_1.default)("Writing Dependences...");
+        if (this.answers.way === inquirer_2.WayType.Project) {
+            projectCtx['devDependencies'][`@${this.name}/${constant_1.templateName}`] = "workspace:^";
+        }
+        const spinner = (0, ora_1.default)("Writing Dependencies...");
         spinner.start();
-        for (const item of dependences) {
+        for (const item of dependencies) {
             const pkgVersion = await (0, latest_version_1.default)(item);
             projectCtx.dependencies[item] = `^${pkgVersion}`;
         }
         (0, fs_extra_1.writeFileSync)((0, path_1.resolve)(projectRoot, "package.json"), JSON.stringify(projectCtx, null, 4));
         spinner.stop();
     }
+    async editTsconfig(projectRoot) {
+        const configCtx = JSON.parse((0, fs_extra_1.readFileSync)((0, path_1.resolve)(projectRoot, "tsconfig.json"), "utf-8"));
+        configCtx.compilerOptions.paths = {
+            [`@${this.name}/*`]: ["packages/*"],
+        };
+        (0, fs_extra_1.writeFileSync)((0, path_1.resolve)(projectRoot, "tsconfig.json"), JSON.stringify(configCtx, null, 2));
+    }
+    // 安装项目依赖
     installDependence() {
-        // 安装项目依赖
         (0, utils_1.install)({ cwd: `./${this.name}`, tool: "pnpm" })
             .then(() => {
             console.log(log_symbols_1.default.success, chalk_1.default.green("🎉 Generate Success"));
