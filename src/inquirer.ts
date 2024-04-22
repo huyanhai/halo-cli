@@ -13,10 +13,16 @@ export enum WayType {
   Project = "project",
 }
 
+export enum LanguageType {
+  Vue = "vue",
+  React = "react",
+}
+
 export interface PromptsType {
   use: UseType;
   platform: PlatformType;
   way?: WayType;
+  language: LanguageType;
 }
 
 export const prompts = [
@@ -48,6 +54,15 @@ export const prompts = [
     choices: [
       { name: "Desktop - 电脑端", value: PlatformType.PC },
       { name: "Mobile - 手机端", value: PlatformType.H5 },
+    ],
+  },
+  {
+    type: "list",
+    name: "language",
+    message: "Select Use:",
+    choices: [
+      { name: "Vue - 基于vue开发", value: LanguageType.Vue },
+      { name: "React - 基于React开发", value: LanguageType.React },
     ],
   },
 ];

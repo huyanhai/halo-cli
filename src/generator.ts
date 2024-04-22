@@ -14,9 +14,10 @@ import latestVersion from "latest-version";
 import ora from "ora";
 
 import { cleanConsole, downloadTemplate, install } from "./utils";
-import { WayType, prompts } from "./inquirer";
+import { LanguageType, WayType, prompts } from "./inquirer";
 import {
   repositoryByVue,
+  repositoryByReact,
   repositoryByMonorepo,
   repositoryByMonorepoForVue,
   cwdDir,
@@ -30,7 +31,11 @@ import { PromptsType, UseType, PlatformType } from "./inquirer";
 export class Generator {
   name: string;
   url: string = "";
-  answers: PromptsType = { use: UseType.DEFAULT, platform: PlatformType.PC };
+  answers: PromptsType = {
+    use: UseType.DEFAULT,
+    platform: PlatformType.PC,
+    language: LanguageType.Vue,
+  };
 
   constructor(name: string) {
     this.name = name;
@@ -43,7 +48,10 @@ export class Generator {
     this.url =
       this.answers.use === UseType.MONOREPO
         ? repositoryByMonorepo
+        : this.answers.language === LanguageType.React
+        ? repositoryByReact
         : repositoryByVue;
+
     this.downloadFn();
   }
 
@@ -142,12 +150,17 @@ export class Generator {
 
     const dependencies =
       this.answers.platform === PlatformType.PC
-        ? ["ant-design-vue", "@ant-design/icons-vue"]
-        : ["vant"];
+        ? this.answers.language === LanguageType.Vue
+          ? ["ant-design-vue", "@ant-design/icons-vue"]
+          : ["antd", "@ant-design/icons"]
+        : this.answers.language === LanguageType.Vue
+        ? ["vant"]
+        : ["@ant-design/mobile"];
     projectCtx.name = this.name;
 
     if (this.answers.way === WayType.Project) {
-      projectCtx['devDependencies'][`@${this.name}/${templateName}`] = "workspace:^";
+      projectCtx["devDependencies"][`@${this.name}/${templateName}`] =
+        "workspace:^";
     }
 
     const spinner = ora("Writing Dependencies...");

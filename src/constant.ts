@@ -12,6 +12,8 @@ export const baseRepository =
   "direct:https://github.com/huyanhai/base-templates";
 export const repositoryByVue =
   "direct:https://github.com/huyanhai/base-templates#vue3";
+export const repositoryByReact =
+  "direct:https://github.com/huyanhai/base-templates#react";
 export const repositoryByMonorepo =
   "direct:https://github.com/huyanhai/base-templates#monorepo";
 export const repositoryByMonorepoForVue =

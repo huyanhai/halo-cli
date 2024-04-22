@@ -10,10 +10,15 @@ export declare enum WayType {
     Library = "library",
     Project = "project"
 }
+export declare enum LanguageType {
+    Vue = "vue",
+    React = "react"
+}
 export interface PromptsType {
     use: UseType;
     platform: PlatformType;
     way?: WayType;
+    language: LanguageType;
 }
 export declare const prompts: ({
     type: string;
@@ -39,5 +44,13 @@ export declare const prompts: ({
     choices: {
         name: string;
         value: PlatformType;
+    }[];
+} | {
+    type: string;
+    name: string;
+    message: string;
+    choices: {
+        name: string;
+        value: LanguageType;
     }[];
 })[];

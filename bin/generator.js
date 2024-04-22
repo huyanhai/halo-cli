@@ -20,7 +20,11 @@ const inquirer_3 = require("./inquirer");
 class Generator {
     constructor(name) {
         this.url = "";
-        this.answers = { use: inquirer_3.UseType.DEFAULT, platform: inquirer_3.PlatformType.PC };
+        this.answers = {
+            use: inquirer_3.UseType.DEFAULT,
+            platform: inquirer_3.PlatformType.PC,
+            language: inquirer_2.LanguageType.Vue,
+        };
         this.name = name;
         this.init();
     }
@@ -30,7 +34,9 @@ class Generator {
         this.url =
             this.answers.use === inquirer_3.UseType.MONOREPO
                 ? constant_1.repositoryByMonorepo
-                : constant_1.repositoryByVue;
+                : this.answers.language === inquirer_2.LanguageType.React
+                    ? constant_1.repositoryByReact
+                    : constant_1.repositoryByVue;
         this.downloadFn();
     }
     checkProjectName() {
@@ -110,11 +116,16 @@ class Generator {
         }
         const projectCtx = JSON.parse((0, fs_extra_1.readFileSync)((0, path_1.resolve)(projectRoot, "package.json"), "utf-8"));
         const dependencies = this.answers.platform === inquirer_3.PlatformType.PC
-            ? ["ant-design-vue", "@ant-design/icons-vue"]
-            : ["vant"];
+            ? this.answers.language === inquirer_2.LanguageType.Vue
+                ? ["ant-design-vue", "@ant-design/icons-vue"]
+                : ["antd", "@ant-design/icons"]
+            : this.answers.language === inquirer_2.LanguageType.Vue
+                ? ["vant"]
+                : ["@ant-design/mobile"];
         projectCtx.name = this.name;
         if (this.answers.way === inquirer_2.WayType.Project) {
-            projectCtx['devDependencies'][`@${this.name}/${constant_1.templateName}`] = "workspace:^";
+            projectCtx["devDependencies"][`@${this.name}/${constant_1.templateName}`] =
+                "workspace:^";
         }
         const spinner = (0, ora_1.default)("Writing Dependencies...");
         spinner.start();

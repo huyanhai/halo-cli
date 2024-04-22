@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.prompts = exports.WayType = exports.PlatformType = exports.UseType = void 0;
+exports.prompts = exports.LanguageType = exports.WayType = exports.PlatformType = exports.UseType = void 0;
 var UseType;
 (function (UseType) {
     UseType["MONOREPO"] = "monorepo";
@@ -16,6 +16,11 @@ var WayType;
     WayType["Library"] = "library";
     WayType["Project"] = "project";
 })(WayType = exports.WayType || (exports.WayType = {}));
+var LanguageType;
+(function (LanguageType) {
+    LanguageType["Vue"] = "vue";
+    LanguageType["React"] = "react";
+})(LanguageType = exports.LanguageType || (exports.LanguageType = {}));
 exports.prompts = [
     {
         type: "list",
@@ -45,6 +50,15 @@ exports.prompts = [
         choices: [
             { name: "Desktop - 电脑端", value: PlatformType.PC },
             { name: "Mobile - 手机端", value: PlatformType.H5 },
+        ],
+    },
+    {
+        type: "list",
+        name: "language",
+        message: "Select Use:",
+        choices: [
+            { name: "Vue - 基于vue开发", value: LanguageType.Vue },
+            { name: "React - 基于React开发", value: LanguageType.React },
         ],
     },
 ];
