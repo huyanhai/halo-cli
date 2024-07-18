@@ -4,16 +4,16 @@
 
 ```bash
 # 使用npm安装CLI
-$ npm install https://github.com/infinitas-plus/zw-cli.git -g
+$ npm install https://github.com/infinitas-plus/halo-cli.git -g
 
 # 使用yarn安装CLI
-$ yarn global add https://github.com/infinitas-plus/zw-cli.git
+$ yarn global add https://github.com/infinitas-plus/halo-cli.git
 ```
 
 ```bash
 # 是否安装成功
-$ zw
-Usage: zw [options] [command]
+$ halo
+Usage: halo [options] [command]
 
 Options:
   -V,--version       output the version number
@@ -21,17 +21,16 @@ Options:
 
 Commands:
   init|i <app-name>  init project
-  cmdb               前端CMDB工具
   help [command]     display help for command
-      ___           ___
-     /  /\         /__/\
-    /  /::|       _\_ \:\
-   /  /:/:|      /__/\ \:\
-  /  /:/|:|__   _\_ \:\ \:\
- /__/:/ |:| /\ /__/\ \:\ \:\
- \__\/  |:|/:/ \  \:\ \:\/:/
-     |  |:/:/   \  \:\ \::/
-     |  |::/     \  \:\/:/
-     |  |:/       \  \::/
-     |__|/         \__\/
+      ___           ___                         ___     
+     /__/\         /  /\                       /  /\    
+     \  \:\       /  /::\                     /  /::\   
+      \__\:\     /  /:/\:\    ___     ___    /  /:/\:\  
+  ___ /  /::\   /  /:/~/::\  /__/\   /  /\  /  /:/  \:\ 
+ /__/\  /:/\:\ /__/:/ /:/\:\ \  \:\ /  /:/ /__/:/ \__\:\
+ \  \:\/:/__\/ \  \:\/:/__\/  \  \:\  /:/  \  \:\ /  /:/
+  \  \::/       \  \::/        \  \:\/:/    \  \:\  /:/ 
+   \  \:\        \  \:\         \  \::/      \  \:\/:/  
+    \  \:\        \  \:\         \__\/        \  \::/   
+     \__\/         \__\/                       \__\/    
 ```
