@@ -86,7 +86,11 @@ class Generator {
         this.answers.way === inquirer_2.WayType.Project && this.writeFiles();
         (0, utils_1.downloadTemplate)(this.url, this.name, true, async () => {
             await this.editFilesInfo();
-            this.answers.way === inquirer_2.WayType.Project && (await this.moveFiles());
+            // 非Monorepo模式下设置项目文件
+            if (this.answers.way === inquirer_2.WayType.Project &&
+                this.answers.use === inquirer_3.UseType.DEFAULT) {
+                await this.moveFiles();
+            }
             this.installDependence();
         });
     }
@@ -123,7 +127,9 @@ class Generator {
                 ? ["vant"]
                 : ["@ant-design/mobile"];
         projectCtx.name = this.name;
-        if (this.answers.way === inquirer_2.WayType.Project) {
+        // 暂时不去写入项目依赖
+        if (this.answers.way === inquirer_2.WayType.Project &&
+            this.answers.use === inquirer_3.UseType.DEFAULT) {
             projectCtx["devDependencies"][`@${this.name}/${constant_1.templateName}`] =
                 "workspace:^";
         }

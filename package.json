@@ -8,7 +8,8 @@
   },
   "scripts": {
     "dev": "tsc --watch",
-    "bin": "rm -rf ./bin && tsc"
+    "bin": "rm -rf ./bin && tsc",
+    "test": "node ./bin/index.js"
   },
   "author": "huyanhai <810839700@qq.com>",
   "license": "ISC",
