@@ -1,4 +1,4 @@
-# zw-cli
+# halo-cli
 
 ## 安装
 

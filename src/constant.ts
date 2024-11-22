@@ -17,4 +17,4 @@ export const repositoryByReact =
 export const repositoryByMonorepo =
   "direct:https://github.com/huyanhai/base-templates#monorepo";
 export const repositoryByMonorepoForVue =
-  "direct:https://github.com/huyanhai/base-templates#monorepo-vue";
+  "direct:https://github.com/huyanhai/base-templates#monorepo";
